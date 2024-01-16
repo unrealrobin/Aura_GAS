@@ -3,11 +3,20 @@
 
 #include "Character/AuraEnemy.h"
 #include "DrawDebugHelpers.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "AbilitySystem/AuraAttributeSet.h"
 #include "Aura/Aura.h"
 
 AAuraEnemy::AAuraEnemy()
 {
 	PrimaryActorTick.bCanEverTick = true;
+
+	//Setting a variable to store the AbilitySystemComponent
+	//On the Base Character Class we are storing the parent to the UAuraAbilitySystemComponent
+	//These Variables are inherited from the Base Character Class
+	AbilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>("AbilitySystemComponent");
+	AbilitySystemComponent->SetIsReplicated(true);//For Multiplayer
+	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 }
 
 void AAuraEnemy::BeginPlay()
