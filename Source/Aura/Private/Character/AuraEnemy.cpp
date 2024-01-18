@@ -16,12 +16,17 @@ AAuraEnemy::AAuraEnemy()
 	//These Variables are inherited from the Base Character Class
 	AbilitySystemComponent = CreateDefaultSubobject<UAuraAbilitySystemComponent>("AbilitySystemComponent");
 	AbilitySystemComponent->SetIsReplicated(true);//For Multiplayer
+	AbilitySystemComponent->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
 	AttributeSet = CreateDefaultSubobject<UAuraAttributeSet>("AttributeSet");
 }
 
 void AAuraEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+
+	/*Initializing the Actor Info for the Enemy. Enemy is the Actor and Avatar*/
+	// We dont need to check the ABilitySystemComponent because we are initializing it in the constructor.
+	AbilitySystemComponent->InitAbilityActorInfo(this, this);
 }
 
 void AAuraEnemy::Tick(float DeltaSeconds)

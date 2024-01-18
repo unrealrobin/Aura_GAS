@@ -21,6 +21,7 @@ public:
 	
 	AAuraCharacterBase();
 
+	/*Initialization of GAS Variables*/
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	UAttributeSet* GetAttributeSet() const { return AttributeSet; }
 
