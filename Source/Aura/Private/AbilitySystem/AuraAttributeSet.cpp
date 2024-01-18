@@ -2,12 +2,20 @@
 
 
 #include "AbilitySystem/AuraAttributeSet.h"
-
-#include "AbilitySystemComponent.h"
 #include "Net/UnrealNetwork.h"
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
+	// ~ This function is automatically created by the Macro ATTRIBUTE_ACCESSORS.
+	// ~ The Macro creates a set of Getter and Setter functions for each attribute of the input class.
+	// ~ The format of each of the created functions is the following:
+	// ~ GetYOURATTRIBUTENAME()
+	// ~ SetYOURATTRIBUTENAME()
+	// ~ InitYOURATTRIBUTENAME()
+	InitHealth(100.f);
+	InitMana(100.f);
+	InitMaxHealth(100.f);
+	InitMaxMana(100.f);
 }
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
