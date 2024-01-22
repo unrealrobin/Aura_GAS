@@ -9,6 +9,8 @@
 class UAttributeSet;
 class UAbilitySystemComponent;
 
+// This struct is used to pass the parameters to the widget controller
+// We use Constructor Overloading to make it easier to use
 USTRUCT(BlueprintType)
 struct FWidgetControllerParams
 {

@@ -5,8 +5,10 @@
 
 #include "AbilitySystemComponent.h"
 #include "Player/AuraPlayerState.h"
+#include "UI/HUD/AuraHUD.h"
 
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Player/AuraPlayerController.h"
 
 AAuraCharacter::AAuraCharacter()
 {
@@ -28,7 +30,6 @@ void AAuraCharacter::PossessedBy(AController* NewController)
 	
 	/*Init Ability Info for the Server*/
 	InitAbilityActorInfo();
-	
 }
 
 void AAuraCharacter::OnRep_PlayerState()
@@ -51,6 +52,18 @@ void AAuraCharacter::InitAbilityActorInfo()
 	//Using the variable to access the GAS Component and Attribute Set.
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
 	AttributeSet = AuraPlayerState->GetAttributeSet();
+
+	if(AAuraPlayerController* AuraPlayerController = Cast<AAuraPlayerController>(GetController()))
+	{
+		if(AAuraHUD* AuraHUD = Cast<AAuraHUD>(AuraPlayerController->GetHUD()))
+		{
+			AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
+		};
+	};
 }
+
+
+
+
 
 
