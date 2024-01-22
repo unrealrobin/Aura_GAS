@@ -48,6 +48,8 @@ public:
 	UFUNCTION(BlueprintCallable)
 	void SetWidgetControllerParams (const FWidgetControllerParams& WCParams);
 
+
+	virtual void BroadcastInitialValue();
 protected:
 
 	/*These four Variables are the most important for the widget controller
