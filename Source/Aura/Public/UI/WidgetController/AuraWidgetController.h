@@ -50,6 +50,9 @@ public:
 
 
 	virtual void BroadcastInitialValue();
+
+	
+	virtual void BindCallbacksToDependencies();
 protected:
 
 	/*These four Variables are the most important for the widget controller
