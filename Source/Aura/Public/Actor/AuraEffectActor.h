@@ -73,6 +73,8 @@ protected:
 
 	// This is a Map that stores the Active Effect Handles and the Ability System Component per character.
 	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveEffectHandlesMap;
+
+	
 private:
 	
 

@@ -2,7 +2,10 @@
 
 
 #include "AbilitySystem/AuraAttributeSet.h"
+
+#include "AbilitySystemBlueprintLibrary.h"
 #include "Net/UnrealNetwork.h"
+
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
@@ -33,6 +36,42 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
+}
+
+// ~ This function is called before the value of an attribute is changed.
+// ~ This function is good for setting clamp values or for setting up dependencies between attributes.
+void UAuraAttributeSet::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const
+{
+	Super::PreAttributeBaseChange(Attribute, NewValue);
+
+	if(Attribute == GetHealthAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxHealth());
+	}
+	
+	if(Attribute == GetManaAttribute())
+	{
+		NewValue = FMath::Clamp(NewValue, 0.f, GetMaxMana());
+	}
+
+	
+	
+}
+
+// ~ This function is called after the value of an attribute is changed.
+// ~ The Data parameter contains a lot information about the effect that changed the attribute.
+void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data)
+{
+	Super::PostGameplayEffectExecute(Data);
+
+	/* Source = causer of the effect, target = target of the effect (Owner of this Attribute Set.)*/
+
+	// ~ Declaring a New Struct of type FGameplayEffectContextHandle.
+	FEffectProperties Props;
+	// ~ Setting the Source and Target Properties of the struct from the Data parameter.
+	SetEffectProperties(Data, Props);
+	
+	
 }
 
 // ~ Called when the Health attribute is replicated to clients.

@@ -3,8 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "AbilitySystemBlueprintLibrary.h"
 #include "AttributeSet.h"
 #include "AbilitySystemComponent.h"
+#include "GameplayEffectExtension.h"
+#include "GameFramework/Character.h"
 #include "AuraAttributeSet.generated.h"
 
 #define ATTRIBUTE_ACCESSORS(ClassName, PropertyName) \
@@ -12,6 +15,43 @@
 	GAMEPLAYATTRIBUTE_VALUE_GETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_SETTER(PropertyName) \
 	GAMEPLAYATTRIBUTE_VALUE_INITTER(PropertyName)
+
+USTRUCT()
+struct FEffectProperties
+{
+	GENERATED_BODY()
+
+	FEffectProperties(){} // Default Constructor
+
+	FGameplayEffectContextHandle EffectContextHandle;
+	
+	/*Source*/
+	UPROPERTY()
+	UAbilitySystemComponent* SourceASC = nullptr;
+
+	UPROPERTY()
+	AActor* SourceAvatarActor = nullptr;
+
+	UPROPERTY()
+	AController* SourceController = nullptr;
+
+	UPROPERTY()
+	ACharacter* SourceCharacter = nullptr;
+
+	/*Target*/
+	UPROPERTY()
+	UAbilitySystemComponent* TargetASC = nullptr;
+
+	UPROPERTY()
+	AActor* TargetAvatarActor = nullptr;
+
+	UPROPERTY()
+	AController* TargetController = nullptr;
+
+	UPROPERTY()
+	ACharacter* TargetCharacter = nullptr;
+	
+};
 
 /**
  * 
@@ -24,6 +64,11 @@ class AURA_API UAuraAttributeSet : public UAttributeSet
 public:
 	UAuraAttributeSet();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+
+	/* Inherited from Parent Class*/
+	virtual void PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const override;
+	virtual void PostGameplayEffectExecute(const FGameplayEffectModCallbackData& Data) override;
 
 	/*Attributes*/
 
@@ -63,4 +108,37 @@ public:
 	
 	UFUNCTION()
 	void OnRep_MaxMana(const FGameplayAttributeData& OldMaxMana) const;
+
+private:
+
+	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const
+	{
+		Props.EffectContextHandle = Data.EffectSpec.GetContext();
+		Props.SourceASC =  Props.EffectContextHandle.GetOriginalInstigatorAbilitySystemComponent();
+
+		if(IsValid(Props.SourceASC) && Props.SourceASC->AbilityActorInfo.IsValid() && Props.SourceASC->AbilityActorInfo->AvatarActor.IsValid())
+		{
+			Props.SourceAvatarActor = Props.SourceASC->AbilityActorInfo->AvatarActor.Get();
+			Props.SourceController = Props.SourceASC->AbilityActorInfo->PlayerController.Get();
+			if(Props.SourceController == nullptr && Props.SourceAvatarActor != nullptr)
+			{
+				if (const APawn* Pawn = Cast<APawn>(Props.SourceAvatarActor))
+				{
+					Props.SourceController = Pawn->GetController();
+				}
+			}
+			if(Props.SourceController)
+			{
+				ACharacter* SourceCharacter = Cast<ACharacter>(Props.SourceController->GetPawn());
+			}
+		}
+
+		if(Data.Target.AbilityActorInfo.IsValid() && Data.Target.AbilityActorInfo->AvatarActor.IsValid())
+		{
+			Props.TargetAvatarActor = Data.Target.AbilityActorInfo->AvatarActor.Get();
+			Props.TargetController = Data.Target.AbilityActorInfo->PlayerController.Get();
+			Props.TargetCharacter = Cast<ACharacter>(Props.TargetAvatarActor);
+			UAbilitySystemComponent* TargetASC =  UAbilitySystemBlueprintLibrary::GetAbilitySystemComponent(Props.TargetAvatarActor);
+		}
+	};
 };
