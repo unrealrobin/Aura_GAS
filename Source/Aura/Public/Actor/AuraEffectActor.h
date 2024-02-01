@@ -74,7 +74,10 @@ protected:
 	// This is a Map that stores the Active Effect Handles and the Ability System Component per character.
 	TMap<FActiveGameplayEffectHandle, UAbilitySystemComponent*> ActiveEffectHandlesMap;
 
-	
+	/* Actor Level*/
+
+	UPROPERTY(EditAnywhere,BlueprintReadOnly, Category = "Applied Effects")
+	float ActorLevel = 1.f;
 private:
 	
 
