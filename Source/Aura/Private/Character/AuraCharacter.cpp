@@ -4,6 +4,7 @@
 #include "Character/AuraCharacter.h"
 
 #include "AbilitySystemComponent.h"
+#include "AbilitySystem/AuraAbilitySystemComponent.h"
 #include "Player/AuraPlayerState.h"
 #include "UI/HUD/AuraHUD.h"
 
@@ -46,6 +47,11 @@ void AAuraCharacter::InitAbilityActorInfo()
 	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
 	check(AuraPlayerState);
 	AuraPlayerState->GetAbilitySystemComponent()->InitAbilityActorInfo(AuraPlayerState, this);
+
+	//Calls the AbilityActorInfoSet function in the AuraAbilitySystemComponent
+	//We want to call this here because we want to bind the delegates in the AbilityActorInfoSet function
+	//This location is the best place to call it because we have all the necessary variables ready at this point.
+	Cast<UAuraAbilitySystemComponent>(AuraPlayerState->GetAbilitySystemComponent())->AbilityActorInfoSet();
 	
 	/*GAS Variables and Initialization*/
 	//Caster this Characters Player state to AuraPlayerState and storing in a variable.

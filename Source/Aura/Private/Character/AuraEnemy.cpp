@@ -26,7 +26,15 @@ void AAuraEnemy::BeginPlay()
 
 	/*Initializing the Actor Info for the Enemy. Enemy is the Actor and Avatar*/
 	// We dont need to check the ABilitySystemComponent because we are initializing it in the constructor.
+	InitAbilityActorInfo();
+}
+
+void AAuraEnemy::InitAbilityActorInfo()
+{
+	/* Ability System Component is Inherited from AuraCharacterBase */
 	AbilitySystemComponent->InitAbilityActorInfo(this, this);
+	Cast<UAuraAbilitySystemComponent>(AbilitySystemComponent)->AbilityActorInfoSet();
+
 }
 
 void AAuraEnemy::Tick(float DeltaSeconds)
