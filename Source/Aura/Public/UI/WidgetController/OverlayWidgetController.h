@@ -29,11 +29,11 @@ struct FUIWidgetRow: public FTableRowBase
 	UTexture2D* Image = nullptr;
 };
 
+// ~ This is a Macro that creates a Delegate Type for changing attributes
+// ~ This delegate gets called when an attribute changes and the attribute variable of this type is bound to it.
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnAttributeChangedSignature, float, NewValue);
+
 // ~ This is a Macro that creates a Delegate Type
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnHealthChangedSignature, float, NewHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxHealthChangedSignature, float, MaxHealth);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnManaChangedSignature, float, NewMana);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnMaxManaChangedSignature, float, MaxMana);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FMessageWidgetRowSignature, FUIWidgetRow, Row);
 
 /**
@@ -53,16 +53,16 @@ public:
 	 * and are bound to their respective Attributes.
 	 */
 	UPROPERTY(BlueprintAssignable, Category="GAS | Attributes")
-	FOnHealthChangedSignature OnHealthChanged;
+	FOnAttributeChangedSignature OnHealthChanged;
 	
 	UPROPERTY(BlueprintAssignable, Category="GAS | Attributes")
-	FOnHealthChangedSignature OnMaxHealthChanged;
+	FOnAttributeChangedSignature OnMaxHealthChanged;
 
 	UPROPERTY(BlueprintAssignable, Category="GAS | Attributes")
-	FOnManaChangedSignature OnManaChanged;
+	FOnAttributeChangedSignature OnManaChanged;
 	
 	UPROPERTY(BlueprintAssignable, Category="GAS | Attributes")
-	FOnManaChangedSignature OnMaxManaChanged;
+	FOnAttributeChangedSignature OnMaxManaChanged;
 
 	UPROPERTY(BlueprintAssignable, Category="GAS | Messages")
 	FMessageWidgetRowSignature MessageWidgetRowDelegate;
@@ -75,12 +75,6 @@ protected:
 	/* Finds a Row in a Data Table */
 	template<typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
-
-	
-	void HealthChanged(const FOnAttributeChangeData& Data) const;
-	void MaxHealthChanged(const FOnAttributeChangeData& Data) const;
-	void ManaChanged(const FOnAttributeChangeData& Data) const;
-	void MaxManaChanged(const FOnAttributeChangeData& Data) const;
 	
 };
 
