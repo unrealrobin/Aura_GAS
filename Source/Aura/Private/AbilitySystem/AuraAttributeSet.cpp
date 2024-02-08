@@ -66,6 +66,18 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	FEffectProperties Props;
 	// ~ Setting the Source and Target Properties of the struct from the Data parameter.
 	SetEffectProperties(Data, Props);
+
+	if(Data.EvaluatedData.Attribute == GetHealthAttribute())
+	{
+		// ~ If the attribute that changed is Health, then we want to clamp the value between 0 and MaxHealth.
+		SetHealth(FMath::Clamp(GetHealth(), 0.0f, GetMaxHealth()));
+	}
+
+	if(Data.EvaluatedData.Attribute == GetManaAttribute())
+	{
+		// ~ If the attribute that changed is Health, then we want to clamp the value between 0 and MaxHealth.
+		SetMana(FMath::Clamp(GetMana(), 0.0f, GetMaxMana()));
+	}
 	
 	
 }
