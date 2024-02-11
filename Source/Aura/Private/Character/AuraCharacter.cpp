@@ -57,6 +57,7 @@ void AAuraCharacter::InitAbilityActorInfo()
 	//Caster this Characters Player state to AuraPlayerState and storing in a variable.
 	//Using the variable to access the GAS Component and Attribute Set.
 	AbilitySystemComponent = AuraPlayerState->GetAbilitySystemComponent();
+	
 	AttributeSet = AuraPlayerState->GetAttributeSet();
 
 	/* Turn the Players HUD into our Custom Hud and Spawn the Overlay Widget*/
@@ -70,6 +71,9 @@ void AAuraCharacter::InitAbilityActorInfo()
 			AuraHUD->InitOverlay(AuraPlayerController, AuraPlayerState, AbilitySystemComponent, AttributeSet);
 		};
 	};
+
+	/*Initialized the Primary Attributes, this function is inherited from Parent Class.*/
+	//InitializePrimaryAttributes();
 }
 
 
