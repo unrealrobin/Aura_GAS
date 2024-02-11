@@ -15,8 +15,8 @@ UAuraAttributeSet::UAuraAttributeSet()
 	// ~ SetYOURATTRIBUTENAME()
 	// ~ InitYOURATTRIBUTENAME()
 	InitHealth(50.f);
-	InitMana(50.f);
 	InitMaxHealth(100.f);
+	InitMana(50.f);
 	InitMaxMana(100.f);
 }
 
@@ -31,12 +31,28 @@ void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Ou
 	 * 3. Replicating Always, even if the value didn't change.
 	 *	Can be changed to REPNOTIFY_Always if you want to replicate only when the value changes.
 	 */
+	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, Strength, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, Intelligence, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, Resilience, COND_None, REPNOTIFY_Always);
+	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, Vigor, COND_None, REPNOTIFY_Always);
+
+	
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, Health, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, MaxHealth, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, Mana, COND_None, REPNOTIFY_Always);
 	DOREPLIFETIME_CONDITION_NOTIFY(UAuraAttributeSet, MaxMana, COND_None, REPNOTIFY_Always);
+	
 }
+/*
+ *
+* The `PreAttributeBaseChange()` and `PostGameplayEffectExecute()` functions in `AuraAttributes.cpp` are part of the Unreal Engine's Gameplay Ability System (GAS). They are used to manage gameplay attributes like health and mana.
 
+The `PreAttributeBaseChange()` function is called before an attribute's value is changed. Here, the new value of the attribute is clamped to ensure it falls within a valid range. For example, the health and mana values are clamped between 0 and their maximum values. This is done to prevent the attributes from having invalid values. For instance, health should not be negative or exceed the maximum health.
+
+The `PostGameplayEffectExecute()` function is called after a gameplay effect has been applied and the attribute's value has changed. Here, the attribute values are clamped again to ensure they remain within the valid range after the effect. This is necessary because the gameplay effect might have changed the attribute's value to something outside its valid range.
+
+In summary, clamping in both `PreAttributeBaseChange()` and `PostGameplayEffectExecute()` ensures that gameplay attributes always stay within their valid ranges, both before and after any changes are made to them.
+ */
 void UAuraAttributeSet::PreAttributeBaseChange(const FGameplayAttribute& Attribute, float& NewValue) const
 {
 	// ~ This function is called before the value of an attribute is changed.
@@ -80,6 +96,28 @@ void UAuraAttributeSet::PostGameplayEffectExecute(const FGameplayEffectModCallba
 	}
 	
 	
+}
+
+void UAuraAttributeSet::OnRep_Strength(const FGameplayAttributeData& OldStrength) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Health, OldStrength);
+
+}
+
+void UAuraAttributeSet::OnRep_Intelligence(const FGameplayAttributeData& OldIntelligence) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Intelligence, OldIntelligence);
+}
+
+void UAuraAttributeSet::OnRep_Vigor(const FGameplayAttributeData& OldVigor) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Vigor, OldVigor);
+}
+
+void UAuraAttributeSet::OnRep_Resilience(const FGameplayAttributeData& OldResilience) const
+{
+	GAMEPLAYATTRIBUTE_REPNOTIFY(UAuraAttributeSet, Resilience, OldResilience);
+
 }
 
 void UAuraAttributeSet::OnRep_Health(const FGameplayAttributeData& OldHealth) const
