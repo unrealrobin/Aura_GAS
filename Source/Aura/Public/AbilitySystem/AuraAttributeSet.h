@@ -105,6 +105,56 @@ public:
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxMana);
 
+	/*Secondary Attributes*/
+	UPROPERTY(ReplicatedUsing = OnRep_Armor, BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData Armor;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Armor);
+	
+	UPROPERTY(ReplicatedUsing = OnRep_ArmorPenetration, BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData ArmorPenetration;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, ArmorPenetration);
+	
+	UPROPERTY(ReplicatedUsing = OnRep_BlockChance, BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData BlockChance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, BlockChance);
+
+	UPROPERTY(ReplicatedUsing = OnRep_CritHitChance, BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData CritHitChance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, CritHitChance);
+	
+	UPROPERTY(ReplicatedUsing = OnRep_CritHitDamage, BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData CritHitDamage;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, CritHitDamage);
+	
+	UPROPERTY(ReplicatedUsing = OnRep_CritHitResistance, BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData CritHitResistance;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, CritHitResistance);
+
+	UPROPERTY(ReplicatedUsing = OnRep_HealthRegen, BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData HealthRegen;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, HealthRegen);
+
+	UPROPERTY(ReplicatedUsing = OnRep_ManaRegen, BlueprintReadOnly, Category = "Secondary Attributes")
+	FGameplayAttributeData ManaRegen;
+	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, ManaRegen);
+
+
+	UFUNCTION()
+	void OnRep_Armor(const FGameplayAttributeData& OldArmor) const;
+	UFUNCTION()
+	void OnRep_ArmorPenetration(const FGameplayAttributeData& OldArmorPenetration) const;
+	UFUNCTION()
+	void OnRep_BlockChance(const FGameplayAttributeData& OldBlockChance) const;
+	UFUNCTION()
+	void OnRep_CritHitChance(const FGameplayAttributeData& OldCritHitChance) const;
+	UFUNCTION()
+	void OnRep_CritHitDamage(const FGameplayAttributeData& OldCritHitDamage) const;
+	UFUNCTION()
+	void OnRep_CritHitResistance(const FGameplayAttributeData& OldCritHitResistance) const;
+	UFUNCTION()
+	void OnRep_HealthRegen(const FGameplayAttributeData& OldHealthRegen) const;
+	UFUNCTION()
+	void OnRep_ManaRegen(const FGameplayAttributeData& OldManaRegen) const;
 	UFUNCTION()
 	void OnRep_Health(const FGameplayAttributeData& OldHealth) const;
 	UFUNCTION()
