@@ -72,8 +72,8 @@ void AAuraCharacter::InitAbilityActorInfo()
 		};
 	};
 
-	/*Initialized the Primary Attributes, this function is inherited from Parent Class.*/
-	//InitializePrimaryAttributes();
+	/*Initialized the Primary & Secondary Attributes, this function is inherited from Parent Class.*/
+	InitializeDefaultAttributes();
 }
 
 
