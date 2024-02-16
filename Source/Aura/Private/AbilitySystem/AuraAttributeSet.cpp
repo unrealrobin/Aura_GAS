@@ -8,14 +8,7 @@
 
 UAuraAttributeSet::UAuraAttributeSet()
 {
-	// ~ This function is automatically created by the Macro ATTRIBUTE_ACCESSORS.
-	// ~ The Macro creates a set of Getter and Setter functions for each attribute of the input class.
-	// ~ The format of each of the created functions is the following:
-	// ~ GetYOURATTRIBUTENAME()
-	// ~ SetYOURATTRIBUTENAME()
-	// ~ InitYOURATTRIBUTENAME()
-	InitHealth(50.f);
-	InitMana(50.f);
+	
 }
 
 void UAuraAttributeSet::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
