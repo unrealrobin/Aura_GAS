@@ -22,7 +22,6 @@ AAuraCharacter::AAuraCharacter()
 	bUseControllerRotationRoll = false;
 	bUseControllerRotationYaw = false;
 	
-	
 }
 
 void AAuraCharacter::PossessedBy(AController* NewController)
@@ -39,6 +38,13 @@ void AAuraCharacter::OnRep_PlayerState()
 
 	/*Init Ability Actor Info for the Client*/
 	InitAbilityActorInfo();
+}
+
+int32 AAuraCharacter::GetPlayerLevel()
+{
+	AAuraPlayerState* AuraPlayerState = GetPlayerState<AAuraPlayerState>();
+	check(AuraPlayerState);
+	return AuraPlayerState->GetPlayerLevel();
 }
 
 void AAuraCharacter::InitAbilityActorInfo()

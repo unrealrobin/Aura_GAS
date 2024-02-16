@@ -26,7 +26,16 @@ public:
 
 	bool ShouldHighlight = false;
 
+	/* Combat Interface */
+	virtual int32 GetPlayerLevel() override;
+	
+
 protected:
 	virtual void BeginPlay() override;
 	virtual void InitAbilityActorInfo() override;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Class Defaults")
+	int32 Level = 1;
+
+
 };
