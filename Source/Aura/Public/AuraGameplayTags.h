@@ -9,6 +9,7 @@
  *
  * Singleton containing native gameplay tags.
  * Native - Created in C++ and Available in C++ and Blueprints
+ * Singleton means that there is only one instance of this class in the game.
  *
  * Singletons - Static class with static members
  */
