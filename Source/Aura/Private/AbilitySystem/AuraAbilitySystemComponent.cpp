@@ -3,6 +3,8 @@
 
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
 
+#include "AuraGameplayTags.h"
+
 void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 {
 	/* Why do we call this here?
@@ -23,6 +25,7 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 	 * params. You can find the params in the documentation for the delegate.
 	 */
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::EffectApplied);
+	
 }
 
 void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent,
