@@ -9,6 +9,7 @@
 #include "AuraCharacterBase.generated.h"
 
 
+class UGameplayAbility;
 class UGameplayEffect;
 /* GAS Variables */
 class UAbilitySystemComponent;
@@ -53,5 +54,12 @@ protected:
 	
 	void InitializeDefaultAttributes() const;
 	void ApplyEffectToSelf(TSubclassOf<UGameplayEffect> GameplayEffectClass) const;
-	
+
+	void AddCharacterAbilities() const;
+
+private:
+
+	// Stores the startup abilities for this character
+	UPROPERTY(EditAnywhere, Category="Abilities")
+	TArray<TSubclassOf<UGameplayAbility>> StartupAbilities;
 };
