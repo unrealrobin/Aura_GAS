@@ -8,7 +8,6 @@
 #include "Interaction/CombatInterface.h"
 #include "AuraCharacterBase.generated.h"
 
-
 class UGameplayAbility;
 class UGameplayEffect;
 /* GAS Variables */
