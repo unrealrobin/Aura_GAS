@@ -33,6 +33,8 @@ public:
 
 	const UInputAction* FindAbilityInputActionForTag(const FGameplayTag& InputTag, bool bLogNotFound = false) const;
 
+
+	// An Array of InputActions
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Inputs")
 	TArray<FAuraInputAction> AbilityInputActions;
 	
