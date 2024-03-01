@@ -3,6 +3,7 @@
 
 #include "Input/AuraInputConfig.h"
 
+// This function is used to find the input action for a given tag
 const UInputAction* UAuraInputConfig::FindAbilityInputActionForTag(const FGameplayTag& InputTag,
 	bool bLogNotFound) const
 {

@@ -19,11 +19,13 @@ public:
 
 	/* A Template Function that is capable of recieving function ptrs */
 	template <class UserClass, typename PressedFuncType, typename ReleasedFuncType, typename HeldFuncType>
-	void BindAbilityActions(const UAuraInputConfig* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, HeldFuncType HeldFunc  )
+	void BindAbilityActions(const UAuraInputConfig* InputConfig, UserClass* Object, PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, HeldFuncType HeldFunc  );
 	
 };
 
 // Template Function Definitions are always in the header file
+// This function will give each of our Input Actions (the ability buttons we press) a function to call when they are pressed, released, or held
+// We bind this function in our PlayerController and Set the InputConfig in BP_AuraPlayerController
 template <class UserClass, typename PressedFuncType, typename ReleasedFuncType, typename HeldFuncType>
 void UAuraInputComponent::BindAbilityActions(const UAuraInputConfig* InputConfig, UserClass* Object,
 	PressedFuncType PressedFunc, ReleasedFuncType ReleasedFunc, HeldFuncType HeldFunc)
