@@ -8,12 +8,12 @@
 #include "AuraPlayerController.generated.h"
 
 class UAuraInputConfig;
-//Forward Declaration
 class UInputMappingContext;
 class UInputAction;
 struct FInputActionValue;
 class IEnemyInterface;
 class UAuraAbilitySystemComponent;
+class USplineComponent;
 /**
  * 
  */
@@ -58,4 +58,27 @@ private:
 	TObjectPtr<UAuraAbilitySystemComponent> AuraAbilitySystemComponent;
 
 	UAuraAbilitySystemComponent* GetASC();
+
+
+	/*
+	 * Click to Move
+	 */
+
+	//The Destination of where we want to go.
+	FVector CachedDestination = FVector::ZeroVector;
+
+	// The Amount of time we have been in route to destination
+	float FollowTime = 0.f;
+
+	float ShortPressThreshold = 0.5f;
+	bool bTargeting = false;
+	// If we are Running Automatically
+	bool bAutoRunning = false;
+
+	// How close to the Destination we need to be to stop
+	UPROPERTY(EditDefaultsOnly, Category = "ClickToMove")
+	float AutoRunAcceptanceRadius = 50.f;
+
+	UPROPERTY(VisibleAnywhere)
+	TObjectPtr<USplineComponent> Spline;
 };

@@ -4,9 +4,11 @@
 #include "Player/AuraPlayerController.h"
 
 #include "AbilitySystemBlueprintLibrary.h"
+#include "AuraGameplayTags.h"
 #include "EnhancedInputSubsystems.h"
 #include "GameplayTagContainer.h"
 #include "AbilitySystem/AuraAbilitySystemComponent.h"
+#include "Components/SplineComponent.h"
 #include "Input/AuraInputComponent.h"
 #include "Interaction/EnemyInterface.h"
 
@@ -15,6 +17,8 @@ AAuraPlayerController::AAuraPlayerController()
 	bReplicates = true;
 	LastActor = nullptr;
 	CurrentActor = nullptr;
+
+	Spline = CreateDefaultSubobject<USplineComponent>("Spline");
 }
 
 void AAuraPlayerController::PlayerTick(float DeltaTime)
@@ -168,7 +172,13 @@ void AAuraPlayerController::CursorTrace()
 
 void AAuraPlayerController::AbilityInputTagPressed(FGameplayTag InputTag)
 {
-	//GEngine->AddOnScreenDebugMessage(1, 5.f, FColor::Red, *InputTag.ToString());
+	if(InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
+	{
+		//If we are targeting a valid actor, we want to use the ability on that actor. Otherwise, we want to move.
+		bTargeting = CurrentActor ? true : false;
+		bAutoRunning = false;
+	}
+	
 }
 
 void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
@@ -181,9 +191,42 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 
 void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 {
-	if(GetASC() == nullptr) return;
+	//if I am not holding LMB, I want to call the ability input tag held function on the ASC
+	if(!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
+	{
+		if(GetASC())
+		{
+			GetASC()->AbilityInputTagHeld(InputTag);
+		}
+		return;
+	}
+	//If we are targeting, we want to use the ability on the actor we are targeting.
+	if(bTargeting)
+	{
+		if(GetASC())
+		{
+			GetASC()->AbilityInputTagHeld(InputTag);
+		}
+	}
+	else
+	{
+		//Here we are holding LMB and we are not targeting, so we want to move.
+		FollowTime += GetWorld()->GetDeltaSeconds();
+		FHitResult Hit;
+		if(GetHitResultUnderCursor(ECC_Visibility, false, Hit))
+		{
+			CachedDestination = Hit.ImpactPoint;
+		}
+
+		if(APawn* ControlledPawn = GetPawn())
+		{
+			//Vector from ControlledPawn to the CachedDestination as a Normalized Vector
+			const FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
+			ControlledPawn->AddMovementInput(WorldDirection);
+		}
+		
+	}
 	
-	GetASC()->AbilityInputTagHeld(InputTag);
 }
 
 UAuraAbilitySystemComponent* AAuraPlayerController::GetASC()
