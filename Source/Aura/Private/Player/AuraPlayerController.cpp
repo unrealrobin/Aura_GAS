@@ -30,7 +30,28 @@ void AAuraPlayerController::PlayerTick(float DeltaTime)
 	//perform trace and handle highlighting
 	CursorTrace();
 	//UE_LOG(LogTemp, Warning, TEXT("Player Tick"));
+
+	AutoRun();
 	
+}
+
+void AAuraPlayerController::AutoRun()
+{
+	// If AutoRunning is False, return. This is set to True in the Released Function after we have found a path to follow.
+	if(!bAutoRunning) return;
+	//This is the code that makes the player character move along the spline.
+	if(APawn* ControlledPawn = GetPawn())
+	{
+		const FVector LocationOnSpline = Spline->FindLocationClosestToWorldLocation(ControlledPawn->GetActorLocation(), ESplineCoordinateSpace::World);
+		const FVector Direction = Spline->FindDirectionClosestToWorldLocation(LocationOnSpline, ESplineCoordinateSpace::World);
+		ControlledPawn->AddMovementInput(Direction);
+
+		const float DistanceToDestination = (LocationOnSpline - CachedDestination).Length();
+		if(DistanceToDestination <= AutoRunAcceptanceRadius)
+		{
+			bAutoRunning = false;
+		}
+	};
 }
 
 void AAuraPlayerController::BeginPlay()
@@ -227,6 +248,9 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 					Spline->AddSplinePoint(PointLocation, ESplineCoordinateSpace::World);
 					DrawDebugSphere(GetWorld(), PointLocation, 8.f, 8, FColor::Green, false, 5.f);
 				}
+				// We want to ignore that last path point
+				CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
+				// When we create the Path we want to toggle our AutoRunning to true
 				bAutoRunning = true;
 			}
 		}
@@ -286,4 +310,6 @@ UAuraAbilitySystemComponent* AAuraPlayerController::GetASC()
 
 	return AuraAbilitySystemComponent;
 }
+
+
 
