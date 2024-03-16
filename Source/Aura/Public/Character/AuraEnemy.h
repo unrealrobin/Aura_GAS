@@ -28,7 +28,6 @@ public:
 
 	/* Combat Interface */
 	virtual int32 GetPlayerLevel() override;
-	
 
 protected:
 	virtual void BeginPlay() override;
@@ -36,6 +35,4 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Character Class Defaults")
 	int32 Level = 1;
-
-
 };

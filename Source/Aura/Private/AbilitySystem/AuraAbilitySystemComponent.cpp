@@ -26,7 +26,6 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 	 * params. You can find the params in the documentation for the delegate.
 	 */
 	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::ClientEffectApplied);
-	
 }
 
 void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf<UGameplayAbility>>& StartupAbilities)
@@ -38,32 +37,31 @@ void UAuraAbilitySystemComponent::AddCharacterAbilities(const TArray<TSubclassOf
 	 * 4. If it is, we add the StartupInputTag to the DynamicAbilityTags
 	 * 5. We then give the ability to the character
 	 */
-	for(const TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
+	for (const TSubclassOf<UGameplayAbility> AbilityClass : StartupAbilities)
 	{
 		FGameplayAbilitySpec AbilitySpec = FGameplayAbilitySpec(AbilityClass, 1);
-		if(const UAuraGameplayAbility* AuraAbility = Cast<UAuraGameplayAbility>(AbilitySpec.Ability))
+		if (const UAuraGameplayAbility* AuraAbility = Cast<UAuraGameplayAbility>(AbilitySpec.Ability))
 		{
 			// Dynamic Ability tags can be added and removed at Run Time
 			// StartupInputTag is a member variable tag that we created in the AuraGameplayAbility class
 			AbilitySpec.DynamicAbilityTags.AddTag(AuraAbility->StartupInputTag);
 			GiveAbility(AbilitySpec);
 		}
-		
 	}
 }
 
 // If pressing input with an ability with the same tag, we call this function
 void UAuraAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputTag)
 {
-	if(!InputTag.IsValid()) return;
+	if (!InputTag.IsValid()) return;
 
 	// looping over all Activatable Abilities
-	for(FGameplayAbilitySpec& AbilitySpec: GetActivatableAbilities())
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
-		if(AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
 		{
 			AbilitySpecInputPressed(AbilitySpec);
-			if(!AbilitySpec.IsActive())
+			if (!AbilitySpec.IsActive())
 			{
 				TryActivateAbility(AbilitySpec.Handle);
 			}
@@ -73,12 +71,12 @@ void UAuraAbilitySystemComponent::AbilityInputTagHeld(const FGameplayTag& InputT
 
 void UAuraAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& InputTag)
 {
-	if(!InputTag.IsValid()) return;
+	if (!InputTag.IsValid()) return;
 
 	// looping over all Activatable Abilities
-	for(FGameplayAbilitySpec& AbilitySpec: GetActivatableAbilities())
+	for (FGameplayAbilitySpec& AbilitySpec : GetActivatableAbilities())
 	{
-		if(AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
+		if (AbilitySpec.DynamicAbilityTags.HasTagExact(InputTag))
 		{
 			AbilitySpecInputReleased(AbilitySpec);
 		}
@@ -86,19 +84,19 @@ void UAuraAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& In
 }
 
 void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent,
-                                                const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
+                                                                     const FGameplayEffectSpec& EffectSpec,
+                                                                     FActiveGameplayEffectHandle ActiveEffectHandle)
 {
 	/* Tag Container stores all of our Tags*/
 	FGameplayTagContainer TagContainer;
 	/* GetAllAssetTags() retrieves all the asset tags*/
 	EffectSpec.GetAllAssetTags(TagContainer);
-	
+
 	/* Broadcasting lets all the binded functions to know to run
 	 * We created a Delegate that gets fired when this function is called.
 	 * 
 	 */
 	EffectAssetTags.Broadcast(TagContainer);
-	
+
 	/* Looping through all the tags in our container and doing something with each Tag.*/
-	
 }

@@ -16,16 +16,15 @@ void UAttributeMenuWidgetController::BindCallbacksToDependencies()
 	 * This happens for all the attributes in our AttributeSet.
 	 */
 	UAuraAttributeSet* AS = CastChecked<UAuraAttributeSet>(AttributeSet);
-	for(auto& Pair: AS->TagsToAttributes)
+	for (auto& Pair : AS->TagsToAttributes)
 	{
 		AbilitySystemComponent->GetGameplayAttributeValueChangeDelegate(Pair.Value()).AddLambda(
-	[this, Pair](const FOnAttributeChangeData& Data)
+			[this, Pair](const FOnAttributeChangeData& Data)
 			{
 				BroadcastAttributeInfo(Pair.Key, Pair.Value());
 			}
 		);
 	}
-	
 }
 
 void UAttributeMenuWidgetController::BroadcastInitialValue() //Called In Blueprints
@@ -35,20 +34,17 @@ void UAttributeMenuWidgetController::BroadcastInitialValue() //Called In Bluepri
 	// We are checking if the AttributeInfo Data Asset is valid
 	check(AttributeInfo);
 
-	
+
 	// Loops through all the attributes in our TagsToAttributes map and broadcasts the initial value of the attribute to the UI
-	for(auto& Pair : AS->TagsToAttributes)
+	for (auto& Pair : AS->TagsToAttributes)
 	{
 		BroadcastAttributeInfo(Pair.Key, Pair.Value());
 	}
-	
-	
 }
 
 void UAttributeMenuWidgetController::BroadcastAttributeInfo(const FGameplayTag& AttributeTag,
-	const FGameplayAttribute& Attribute) const
+                                                            const FGameplayAttribute& Attribute) const
 {
-	
 	FAuraAttributeInfo Info = AttributeInfo->FindAttributeInfoForTag(AttributeTag);
 	Info.AttributeValue = Attribute.GetNumericValue(AttributeSet); //Returns a Gameplay Attribute 
 	AttributeInfoDelegate.Broadcast(Info);

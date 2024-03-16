@@ -16,9 +16,14 @@ struct FWidgetControllerParams
 {
 	GENERATED_BODY()
 
-	FWidgetControllerParams(){}
+	FWidgetControllerParams()
+	{
+	}
+
 	FWidgetControllerParams(APlayerController* PC, APlayerState* PS, UAbilitySystemComponent* ASC, UAttributeSet* AS)
-	: PlayerController(PC), PlayerState(PS), AbilitySystemComponent(ASC), AttributeSet(AS) {}
+		: PlayerController(PC), PlayerState(PS), AbilitySystemComponent(ASC), AttributeSet(AS)
+	{
+	}
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<APlayerController> PlayerController = nullptr;
@@ -31,7 +36,6 @@ struct FWidgetControllerParams
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite)
 	TObjectPtr<UAttributeSet> AttributeSet = nullptr;
-	
 };
 
 
@@ -44,22 +48,21 @@ class AURA_API UAuraWidgetController : public UObject
 	GENERATED_BODY()
 
 public:
-	
 	UFUNCTION(BlueprintCallable)
-	void SetWidgetControllerParams (const FWidgetControllerParams& WCParams);
+	void SetWidgetControllerParams(const FWidgetControllerParams& WCParams);
 
 	UFUNCTION(BlueprintCallable)
 	virtual void BroadcastInitialValue();
 
-	
-	virtual void BindCallbacksToDependencies();
-protected:
 
+	virtual void BindCallbacksToDependencies();
+
+protected:
 	/*These four Variables are the most important for the widget controller
 	 * and are the ones that will be used the most. The rest are just for
 	 * convenience.
 	 */
- 
+
 	UPROPERTY(BlueprintReadOnly, Category = "Widget Controller")
 	TObjectPtr<APlayerController> PlayerController;
 

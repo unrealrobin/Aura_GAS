@@ -27,7 +27,6 @@ struct FAuraAttributeInfo
 };
 
 
-
 /**
  * 
  */
@@ -37,12 +36,9 @@ class AURA_API UAttributeInfo : public UDataAsset
 	GENERATED_BODY()
 
 public:
-
 	FAuraAttributeInfo FindAttributeInfoForTag(const FGameplayTag& AttributeTag, bool bLogNotFound = false) const;
 
 	/* Adding AttributeInfo Structs to this Data Asset in Blueprints */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
 	TArray<FAuraAttributeInfo> AttributeInformation;
-	
-	
 };

@@ -32,11 +32,10 @@ protected:
 	virtual void SetupInputComponent() override;
 
 private:
-
 	//Input & Movement
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputMappingContext> AuraContext;
-	
+
 	UPROPERTY(EditAnywhere, Category = "Input")
 	TObjectPtr<UInputAction> MoveAction;
 

@@ -22,10 +22,12 @@ struct FEffectProperties
 {
 	GENERATED_BODY()
 
-	FEffectProperties(){} // Default Constructor
+	FEffectProperties()
+	{
+	} // Default Constructor
 
 	FGameplayEffectContextHandle EffectContextHandle;
-	
+
 	/*Source*/
 	UPROPERTY()
 	UAbilitySystemComponent* SourceASC = nullptr;
@@ -51,11 +53,10 @@ struct FEffectProperties
 
 	UPROPERTY()
 	ACharacter* TargetCharacter = nullptr;
-	
 };
 
 //typedef TBaseStaticDelegateInstance<FGameplayAttribute(), FDefaultDelegateUserPolicy>::FFuncPtr FAttributeFuncPtr;
-template<class T>
+template <class T>
 using TStaticFuncPtr = typename TBaseStaticDelegateInstance<T, FDefaultDelegateUserPolicy>::FFuncPtr;
 
 
@@ -81,7 +82,7 @@ public:
 	// The second template parameter is the type of the function pointer
 	// The third template parameter is the policy to use for the delegate
 	TMap<FGameplayTag, TStaticFuncPtr<FGameplayAttribute()>> TagsToAttributes;
-	
+
 
 	/*
 	 *Primary Attributes
@@ -101,7 +102,7 @@ public:
 	UPROPERTY(ReplicatedUsing = OnRep_Vigor, BlueprintReadOnly, Category = "Primary Attributes")
 	FGameplayAttributeData Vigor;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Vigor);
-	
+
 	/*
 	 *Vital Attributes
 	 */
@@ -109,7 +110,7 @@ public:
 	FGameplayAttributeData Health;
 	// This Macro creates a set of Getter and Setter functions for each attribute of the input class.
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Health);
-	
+
 	UPROPERTY(ReplicatedUsing = OnRep_Mana, BlueprintReadOnly, Category = "Vital Attributes")
 	FGameplayAttributeData Mana;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Mana);
@@ -120,19 +121,19 @@ public:
 	UPROPERTY(ReplicatedUsing = OnRep_MaxMana, BlueprintReadOnly, Category = "Secondary Attributes")
 	FGameplayAttributeData MaxMana;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxMana);
-	
+
 	UPROPERTY(ReplicatedUsing = OnRep_MaxHealth, BlueprintReadOnly, Category = "Secondary Attributes")
 	FGameplayAttributeData MaxHealth;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, MaxHealth);
-	
+
 	UPROPERTY(ReplicatedUsing = OnRep_Armor, BlueprintReadOnly, Category = "Secondary Attributes")
 	FGameplayAttributeData Armor;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, Armor);
-	
+
 	UPROPERTY(ReplicatedUsing = OnRep_ArmorPenetration, BlueprintReadOnly, Category = "Secondary Attributes")
 	FGameplayAttributeData ArmorPenetration;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, ArmorPenetration);
-	
+
 	UPROPERTY(ReplicatedUsing = OnRep_BlockChance, BlueprintReadOnly, Category = "Secondary Attributes")
 	FGameplayAttributeData BlockChance;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, BlockChance);
@@ -140,11 +141,11 @@ public:
 	UPROPERTY(ReplicatedUsing = OnRep_CritHitChance, BlueprintReadOnly, Category = "Secondary Attributes")
 	FGameplayAttributeData CritHitChance;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, CritHitChance);
-	
+
 	UPROPERTY(ReplicatedUsing = OnRep_CritHitDamage, BlueprintReadOnly, Category = "Secondary Attributes")
 	FGameplayAttributeData CritHitDamage;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, CritHitDamage);
-	
+
 	UPROPERTY(ReplicatedUsing = OnRep_CritHitResistance, BlueprintReadOnly, Category = "Secondary Attributes")
 	FGameplayAttributeData CritHitResistance;
 	ATTRIBUTE_ACCESSORS(UAuraAttributeSet, CritHitResistance);
@@ -192,7 +193,5 @@ public:
 	void OnRep_Resilience(const FGameplayAttributeData& OldResilience) const;
 
 private:
-
 	void SetEffectProperties(const FGameplayEffectModCallbackData& Data, FEffectProperties& Props) const;
-	
 };

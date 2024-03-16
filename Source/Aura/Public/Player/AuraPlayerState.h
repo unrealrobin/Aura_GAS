@@ -37,7 +37,6 @@ protected:
 	TObjectPtr<UAttributeSet> AttributeSet;
 
 private:
-
 	UPROPERTY(VisibleAnywhere, ReplicatedUsing = OnRep_Level, Category = "PlayerState")
 	int32 Level = 1;
 

@@ -12,7 +12,7 @@
  */
 UOverlayWidgetController* AAuraHUD::GetOverlayWidgetController(const FWidgetControllerParams& WCParams)
 {
-	if(OverlayWidgetController == nullptr)
+	if (OverlayWidgetController == nullptr)
 	{
 		/* Creating a new Widget Controller */
 		OverlayWidgetController = NewObject<UOverlayWidgetController>(this, OverlayWidgetControllerClass);
@@ -28,12 +28,13 @@ UOverlayWidgetController* AAuraHUD::GetOverlayWidgetController(const FWidgetCont
 
 UAttributeMenuWidgetController* AAuraHUD::GetAttributeMenuWidgetController(const FWidgetControllerParams& WCParams)
 {
-	if(AttributeMenuWidgetController == nullptr)
+	if (AttributeMenuWidgetController == nullptr)
 	{
 		//Creating a new Object of type UAttributeMenuWidgetController
 		//The outer object in this case is the AuraHUD, it is optional, but because we want to set the class of the new object to
 		//AttributeMenuWidgetControllerClass, we need to
-		AttributeMenuWidgetController  = NewObject<UAttributeMenuWidgetController>(this, AttributeMenuWidgetControllerClass);
+		AttributeMenuWidgetController = NewObject<UAttributeMenuWidgetController>(
+			this, AttributeMenuWidgetControllerClass);
 		AttributeMenuWidgetController->SetWidgetControllerParams(WCParams);
 		AttributeMenuWidgetController->BindCallbacksToDependencies();
 		return AttributeMenuWidgetController;
@@ -63,8 +64,6 @@ void AAuraHUD::InitOverlay(APlayerController* PC, APlayerState* PS, UAbilitySyst
 
 	//Broadcasting the Initial Values
 	WidgetController->BroadcastInitialValue();
-	
+
 	Widget->AddToViewport();
 }
-
-

@@ -17,7 +17,6 @@ class AURA_API UAuraAbilitySystemLibrary : public UBlueprintFunctionLibrary
 	GENERATED_BODY()
 
 public:
-
 	/*
 	 * Static functions need some context object that we can use to have context for the world
 	 * we are in.
@@ -27,5 +26,4 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "AuraAbilitySystemLibrary | Widget Controller")
 	static UAttributeMenuWidgetController* GetAttributeMenuWidgetController(UObject* WorldContextObject);
-	
 };

@@ -12,7 +12,7 @@ class UAuraUserWidget;
  * It gets the data from the data table.
  */
 USTRUCT(BlueprintType)
-struct FUIWidgetRow: public FTableRowBase
+struct FUIWidgetRow : public FTableRowBase
 {
 	GENERATED_BODY()
 
@@ -47,20 +47,20 @@ class AURA_API UOverlayWidgetController : public UAuraWidgetController
 public:
 	virtual void BroadcastInitialValue() override;
 	virtual void BindCallbacksToDependencies() override;
-	
+
 	/* Used to Bind Callbacks after a Delegate is called on an Attribute Change.
 	 * These are values of a Delegate Type that have the Broadcast() function
 	 * and are bound to their respective Attributes.
 	 */
 	UPROPERTY(BlueprintAssignable, Category="GAS | Attributes")
 	FOnAttributeChangedSignature OnHealthChanged;
-	
+
 	UPROPERTY(BlueprintAssignable, Category="GAS | Attributes")
 	FOnAttributeChangedSignature OnMaxHealthChanged;
 
 	UPROPERTY(BlueprintAssignable, Category="GAS | Attributes")
 	FOnAttributeChangedSignature OnManaChanged;
-	
+
 	UPROPERTY(BlueprintAssignable, Category="GAS | Attributes")
 	FOnAttributeChangedSignature OnMaxManaChanged;
 
@@ -68,14 +68,12 @@ public:
 	FMessageWidgetRowSignature MessageWidgetRowDelegate;
 
 protected:
-
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Widget Data")
 	TObjectPtr<UDataTable> MessageWidgetDataTable;
 
 	/* Finds a Row in a Data Table */
-	template<typename T>
+	template <typename T>
 	T* GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag);
-	
 };
 
 /* Find a Row in the data table by Tag Name
@@ -86,5 +84,4 @@ template <typename T>
 T* UOverlayWidgetController::GetDataTableRowByTag(UDataTable* DataTable, const FGameplayTag& Tag)
 {
 	return DataTable->FindRow<T>(Tag.GetTagName(), TEXT(""));
-	
 }

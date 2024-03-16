@@ -22,5 +22,4 @@ public:
 
 	/* The Attributes we want to capture and use within our Custom Calc.*/
 	FGameplayEffectAttributeCaptureDefinition IntelligenceDef;
-	
 };
