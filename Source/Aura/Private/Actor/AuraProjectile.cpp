@@ -9,6 +9,7 @@
 AAuraProjectile::AAuraProjectile()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	bReplicates = true;
 
 	/*Sphere Component for the Actual Projectile*/
 	Sphere = CreateDefaultSubobject<USphereComponent>("Sphere");
