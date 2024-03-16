@@ -25,7 +25,7 @@ void UAuraAbilitySystemComponent::AbilityActorInfoSet()
 	 * But Delegates have certain params that need to be passed to them. So the function we are calling needs to have the same
 	 * params. You can find the params in the documentation for the delegate.
 	 */
-	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::EffectApplied);
+	OnGameplayEffectAppliedDelegateToSelf.AddUObject(this, &UAuraAbilitySystemComponent::ClientEffectApplied);
 	
 }
 
@@ -85,7 +85,7 @@ void UAuraAbilitySystemComponent::AbilityInputTagReleased(const FGameplayTag& In
 	}
 }
 
-void UAuraAbilitySystemComponent::EffectApplied(UAbilitySystemComponent* AbilitySystemComponent,
+void UAuraAbilitySystemComponent::ClientEffectApplied_Implementation(UAbilitySystemComponent* AbilitySystemComponent,
                                                 const FGameplayEffectSpec& EffectSpec, FActiveGameplayEffectHandle ActiveEffectHandle)
 {
 	/* Tag Container stores all of our Tags*/

@@ -27,10 +27,7 @@ AAuraPlayerController::AAuraPlayerController()
 void AAuraPlayerController::PlayerTick(float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
-	//perform trace and handle highlighting
 	CursorTrace();
-	//UE_LOG(LogTemp, Warning, TEXT("Player Tick"));
-
 	AutoRun();
 	
 }
@@ -125,7 +122,6 @@ void AAuraPlayerController::Move(const FInputActionValue& InputActionValue)
 
 void AAuraPlayerController::CursorTrace()
 {
-	FHitResult CursorHit;
 	GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 	if(!CursorHit.bBlockingHit)
 	{
@@ -155,41 +151,11 @@ void AAuraPlayerController::CursorTrace()
 	*	3. If they are different, call UnHighlightActor on Last Actor and HighlightActor on Current Actor
 	*/
 
-	if (LastActor == nullptr)
+	if(LastActor != CurrentActor)
 	{
-		if(CurrentActor != nullptr)
-		{
-			//Case B
-			CurrentActor->HighlightActor();
-			UE_LOG(LogTemp, Warning, TEXT("Highlighting Actor"));
-		}
-		else
-		{
-			//Case A - Both are Null, Do Nothing
-			return;
-		}
-	}
-	else //Last Actor is Valid
-	{
-		if(CurrentActor == nullptr)
-		{
-			//Case C
-			LastActor->UnHighlightActor();
-		}
-		else
-		{
-			if(LastActor != CurrentActor)
-			{
-				//Case D
-				LastActor->UnHighlightActor();
-				CurrentActor->HighlightActor();
-			}
-			else
-			{
-				//Case D - Same Actor, Do Nothing
-				return;
-			}
-		}
+		if(LastActor) LastActor -> UnHighlightActor();
+		if(CurrentActor) CurrentActor -> HighlightActor();
+		
 	}
 	
 }
@@ -246,7 +212,6 @@ void AAuraPlayerController::AbilityInputTagReleased(FGameplayTag InputTag)
 				{
 					//Adding a point to the spline
 					Spline->AddSplinePoint(PointLocation, ESplineCoordinateSpace::World);
-					DrawDebugSphere(GetWorld(), PointLocation, 8.f, 8, FColor::Green, false, 5.f);
 				}
 				// We want to ignore that last path point
 				CachedDestination = NavPath->PathPoints[NavPath->PathPoints.Num() - 1];
@@ -265,29 +230,19 @@ void AAuraPlayerController::AbilityInputTagHeld(FGameplayTag InputTag)
 	//if I am not holding LMB, I want to call the ability input tag held function on the ASC
 	if(!InputTag.MatchesTagExact(FAuraGameplayTags::Get().InputTag_LMB))
 	{
-		if(GetASC())
-		{
-			GetASC()->AbilityInputTagHeld(InputTag);
-		}
+		if(GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 		return;
 	}
 	//If we are targeting, we want to use the ability on the actor we are targeting.
 	if(bTargeting)
 	{
-		if(GetASC())
-		{
-			GetASC()->AbilityInputTagHeld(InputTag);
-		}
+		if(GetASC()) GetASC()->AbilityInputTagHeld(InputTag);
 	}
 	else
 	{
 		//Here we are holding LMB and we are not targeting, so we want to move.
 		FollowTime += GetWorld()->GetDeltaSeconds();
-		FHitResult Hit;
-		if(GetHitResultUnderCursor(ECC_Visibility, false, Hit))
-		{
-			CachedDestination = Hit.ImpactPoint;
-		}
+		if(CursorHit.bBlockingHit) CachedDestination = CursorHit.ImpactPoint;
 
 		if(APawn* ControlledPawn = GetPawn())
 		{
