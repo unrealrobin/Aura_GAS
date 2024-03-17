@@ -14,8 +14,17 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 {
 	Super::ActivateAbility(Handle, ActorInfo, ActivationInfo, TriggerEventData);
 
+	
+
+	
+}
+
+void UAuraProjectileSpell::SpawnProjectile()
+{
+	//Callable from Blueprints
+	
 	//Spawning the Projectile
-	const bool bIsServer = HasAuthority(&ActivationInfo); // On the server if true.
+	const bool bIsServer = GetAvatarActorFromActorInfo()->HasAuthority(); 
 	if(!bIsServer) return;
 
 	ICombatInterface* CombatInterface = Cast<ICombatInterface>(GetAvatarActorFromActorInfo());
@@ -37,6 +46,4 @@ void UAuraProjectileSpell::ActivateAbility(const FGameplayAbilitySpecHandle Hand
 		
 		Projectile->FinishSpawning(SpawnTransform);
 	}
-
-	
 }
