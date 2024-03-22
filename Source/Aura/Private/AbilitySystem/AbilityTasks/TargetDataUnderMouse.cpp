@@ -3,6 +3,8 @@
 
 #include "AbilitySystem/AbilityTasks/TargetDataUnderMouse.h"
 
+#include "AbilitySystemComponent.h"
+
 UTargetDataUnderMouse* UTargetDataUnderMouse::CreateTargetDataUnderMouse(UGameplayAbility* OwningAbility)
 {
 	UTargetDataUnderMouse* MyObj = NewAbilityTask<UTargetDataUnderMouse>(OwningAbility);
@@ -12,16 +14,47 @@ UTargetDataUnderMouse* UTargetDataUnderMouse::CreateTargetDataUnderMouse(UGamepl
 
 void UTargetDataUnderMouse::Activate()
 {
-	// Getting the location of the cursor
-	// Ability Tasks know about the Ability and the Ability's ActorInfo
-	// ActorInfo is a struct that contains the Actor, the Avatar Actor, and the PlayerController
-	// We use Get because the the Returned player controller is a TWeakObjectPtr
-	// A TWeakObjectPtr is a pointer that can be null, and it is not guaranteed to be valid
+	const bool bIsLocallyControlled = Ability->GetCurrentActorInfo()->IsLocallyControlled();
+
+	// If we are on the client, we send the mouse cursor data because the server will not have the cursor data
+	if (bIsLocallyControlled)
+	{
+		SendMouseCursorData();
+	}
+	else
+	{
+		//TODO: We are on the server so listen for Target Data
+	}
+
+}
+
+void UTargetDataUnderMouse::SendMouseCursorData()
+{
+
+	FScopedPredictionWindow ScopedPrediction(AbilitySystemComponent.Get());
+	
+	// Getting the location of the cursor.
 	APlayerController* PC = Ability->GetCurrentActorInfo()->PlayerController.Get();
 	FHitResult CursorHit;
 	PC->GetHitResultUnderCursor(ECC_Visibility, false, CursorHit);
 
-	// Broadcasting the location of the cursor
-	// Will mean the TargetData Execution Pin will be fired in BP's
-	TargetData.Broadcast(CursorHit.Location);
+	//Create a Data Hanle to store the Hit Result and make transfering data simpler.
+	FGameplayAbilityTargetDataHandle DataHandle;
+	
+	// Create a new object of this Type.
+	FGameplayAbilityTargetData_SingleTargetHit* Data = new FGameplayAbilityTargetData_SingleTargetHit();
+	// HitResult is a variable in the FGameplayAbilityTargetData_SingleTargetHit struct. We set it equal to the CursorHit.
+	Data->HitResult = CursorHit;
+	
+	// Add the Data to the Data Handle.
+	DataHandle.Add(Data);
+
+	AbilitySystemComponent->ServerSetReplicatedTargetData(
+		GetAbilitySpecHandle(), GetActivationPredictionKey(), DataHandle, FGameplayTag(),
+		AbilitySystemComponent->ScopedPredictionKey);
+
+	 if(ShouldBroadcastAbilityTaskDelegates())
+	 {
+		 TargetData.Broadcast(DataHandle);
+	 };
 }
