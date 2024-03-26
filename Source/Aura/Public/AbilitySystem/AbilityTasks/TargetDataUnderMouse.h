@@ -18,6 +18,7 @@ class AURA_API UTargetDataUnderMouse : public UAbilityTask
 
 public:
 
+	
 	UFUNCTION(BlueprintCallable, Category = "Ability|Tasks", meta = (
 		DisplayName = "TargetDataUnderMouse",
 		HidePin = "OwningAbility", 
@@ -31,7 +32,9 @@ public:
 private:
 
 	virtual void Activate() override;
-
 	void SendMouseCursorData();
+
+	// THis function will be called after the server receives the target data from the client via the delegate.
+	void OnTargetDataReplicationCallback(const FGameplayAbilityTargetDataHandle& Data, FGameplayTag ActivationTag);
 	
 };
